@@ -344,7 +344,18 @@ class Positioner:
         position = ctypes.c_double()
         ANC.getPosition(self.device, axisNo, ctypes.byref(position))
         return position.value
-    
+
+    def getSensorVoltage(self): ##added by Itai Silber 25.05.2022
+        '''
+        Retrieves the voltage applied to position sensor, for RES only
+        Returns
+            voltage: the current voltage applied for sensor [V]
+        '''
+        voltage = ctypes.c_double()
+        axis = ctypes.c_int(0)
+        ANC.getSensorVoltage(self.device,axis,ctypes.byref(voltage))
+        return voltage.value
+        
     
     def measureCapacitance(self, axisNo):
         '''
@@ -448,7 +459,18 @@ class Positioner:
             None
         '''
         ANC.setFrequency(self.device, axisNo, ctypes.c_double(frequency))
+
+    def setSensorVoltage(self,voltage): 
+        '''
+        Sets the voltage applied to position sensor, for RES only
         
+        Parameters
+           voltage	Voltage in V for the measurment of the position sensor
+        Returns
+            None
+        '''
+        axisNo = ctypes.c_int(0)
+        ANC.setSensorVoltage(self.device,axisNo,ctypes.c_double(voltage))
    
     def setTargetPosition(self, axisNo, target):
         '''
@@ -475,7 +497,18 @@ class Positioner:
         '''
         ANC.setTargetRange(self.device, axisNo, ctypes.c_double(targetRg))
         
-        
+    def setTargetGround(self,axisNo,enable):
+        '''
+        Sets if an axisNo will be grounded once acheived target.
+
+        Parmeters
+            axisNo Axis number (0 ... 2)
+            enable = Enables (1) or disables (0) grounding on target
+        Returen
+            None
+        '''
+        ANC.setTargetGround(self.device, axisNo,enable)
+            
     def startAutoMove(self, axisNo, enable, relative):
         '''
         Switches automatic moving (i.e. following the target position) on or off

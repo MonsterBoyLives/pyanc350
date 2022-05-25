@@ -62,13 +62,10 @@ def checkError(code,func,args):
     return code
 
 # import dll - have to change directories so it finds libusb0.dll
-'''
 directory_of_this_module_and_dlls = os.path.dirname(os.path.realpath(__file__))
-current_directory = os.getcwd()
 os.chdir(directory_of_this_module_and_dlls)
 anc350v4 = ctypes.windll.LoadLibrary(directory_of_this_module_and_dlls+'\\anc350v4.dll')
-os.chdir(current_directory)
-'''
+##os.chdir(current_directory)
 anc350v4 = ctypes.windll.anc350v4
 
 #aliases for the strangely-named functions from the dll
@@ -88,7 +85,10 @@ startSingleStep = getattr(anc350v4,"ANC_startSingleStep")
 startContinousMove = getattr(anc350v4,"ANC_startContinousMove")
 startAutoMove = getattr(anc350v4,"ANC_startAutoMove")
 setTargetPosition = getattr(anc350v4,"ANC_setTargetPosition")
+getSensorVoltage = getattr(anc350v4,"ANC_getSensorVoltage") 
 setTargetRange = getattr(anc350v4,"ANC_setTargetRange")
+setSensorVoltage = getattr(anc350v4,"ANC_setSensorVoltage") 
+setTargetGround = getattr(anc350v4,"ANC_setTargetGround") 
 getPosition = getattr(anc350v4,"ANC_getPosition")
 getFirmwareVersion = getattr(anc350v4,"ANC_getFirmwareVersion")
 configureExtTrigger = getattr(anc350v4,"ANC_configureExtTrigger")
@@ -120,10 +120,13 @@ getFrequency.errcheck = checkError
 startSingleStep.errcheck = checkError
 startContinousMove.errcheck = checkError
 startAutoMove.errcheck = checkError
+setSensorVoltage.errcheck = checkError 
 setTargetPosition.errcheck = checkError
 setTargetRange.errcheck = checkError
+setTargetGround.errcheck = checkError 
 getPosition.errcheck = checkError
 getFirmwareVersion.errcheck = checkError
+getSensorVoltage.errcheck = checkError 
 configureExtTrigger.errcheck = checkError
 configureAQuadBIn.errcheck = checkError
 configureAQuadBOut.errcheck = checkError
@@ -137,3 +140,4 @@ getActuatorName.errcheck = checkError
 getActuatorType.errcheck = checkError
 measureCapacitance.errcheck = checkError
 saveParams.errcheck = checkError
+
